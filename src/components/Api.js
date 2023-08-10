@@ -1,5 +1,5 @@
 const URL = 'https://pixabay.com/api';
-const KEY = '36534768-9895174b062ef79544d81d3db';
+const KEY = '36612658-29e1993b7f5cae28e7421abef';
 
 const images = async (img, page = 1) => {
   const response = await fetch(

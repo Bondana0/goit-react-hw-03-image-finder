@@ -7,12 +7,12 @@ export const Loader = ({ isLoading }) => {
       {isLoading && (
         <ColorRing
           visible={true}
-          height="200"
-          width="200"
+          height="100"
+          width="100"
           ariaLabel="blocks-loading"
           wrapperStyle={{ margin: 'auto' }}
           wrapperClass="blocks-wrapper"
-          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+          colors={['#f47e60', '#f47e60', '#f8b26a', '#f8b26a', '#f47e60']}
         />
       )}
     </>

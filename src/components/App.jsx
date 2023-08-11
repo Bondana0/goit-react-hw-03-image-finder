@@ -1,34 +1,37 @@
 import { Component } from 'react';
-
 import { SearchBars } from './Searchbar/Searchbar';
 import { Button } from 'components/Button/Button';
+
+
 import Api from './Api';
+
 import { Loader } from 'components/Loader/Loader';
 import { Modal } from './Modal/Modal';
 import { ImageAlbum } from './ImageGallery/ImageGallery';
-
 import css from './App.module.css';
 
 export class App extends Component {
   state = {
+    query: '',
     name: '',
     img: [],
     page: 1,
     tags: '',
     totalPages: 0,
+    totalImages: 0,
     isLoading: false,
-    error: null,
     modal: { isOpen: false, imgModal: null, tags: '' },
+    error: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { name, page } = this.state;
     if (prevState.name !== name || prevState.page !== page) {
-      this.fetchImages();
+      this.loadImages();
     }
   }
 
-  fetchImages = async () => {
+  loadImages = async () => {
     const { name, page } = this.state;
 
     this.setState({ isLoading: true });
@@ -48,62 +51,72 @@ export class App extends Component {
       .catch(error => this.setState({ error: error.message }));
   };
 
-  onSubmit = name => {
-    this.setState({ name, page: 1 }, () => {
-      this.scrollToTop();
-    });
-  };
 
-  scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
 
-  onClickModalOpen = (img, tags) => {
-    this.setState({ modal: { isOpen: true, imgModal: img, tags } });
-  };
 
-  onClickModalCloys = () => {
-    this.setState({ modal: { isOpen: false, imgModal: null, tags: '' } });
-  };
+    scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    };
 
-  clickBtn = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
-  };
+    onSubmit = name => {
+      this.setState({ name, page: 1 }, () => {
+        this.scrollToTop();
+      });
+    };
 
-  render() {
-    const { img, page, modal, isLoading, error, totalPages } = this.state;
-    return (
-      <div className={css.app}>
-        <SearchBars onSubmit={this.onSubmit} />
-        {img.length === 0 && (
-          <h1 className={css.title}>
-            Your pictures will be here if you enter the data in the form 🥰
-          </h1>
-        )}
-        {modal.isOpen && (
-          <Modal
-            onCloys={this.onClickModalCloys}
-            imgModal={modal.imgModal}
-            modalTags={modal.tags}
+    onClickModalOpen = (img, tags) => {
+      this.setState({ modal: { isOpen: true, imgModal: img, tags } });
+    };
+
+    onClickModalCloys = () => {
+      this.setState({ modal: { isOpen: false, imgModal: null, tags: '' } });
+    };
+
+    clickBtn = () => {
+      this.setState(prevState => ({ page: prevState.page + 1 }));
+    };
+
+    render() {
+      const { img, page, modal, isLoading, error, totalPages, totalImages } = this.state;
+      const onLoadMore = this.onLoadMore;
+      return (
+        <div className={css.app}>
+          <SearchBars onSubmit={this.onSubmit} />
+          {img.length === 0 && (
+            <h1 className={css.title}>
+              Your pictures will be here if you enter the data in the form 🥰
+            </h1>
+          )}
+          {totalPages >= this.imagesLimit && totalPages < totalImages && (
+            <Button onClick={onLoadMore} />
+          )}
+
+        
+
+          {modal.isOpen && (
+            <Modal
+              onCloys={this.onClickModalCloys}
+              imgModal={modal.imgModal}
+              modalTags={modal.tags}
+            />
+          )}
+          {error && (
+            <p className={css.title}>
+              Oops, some error. Please, try again later. Error: {error}
+            </p>
+          )}
+          <ImageAlbum openModal={this.onClickModalOpen} items={img} />
+          <Button
+            onClick={this.clickBtn}
+            img={img}
+            totalPages={totalPages}
+            page={page}
           />
-        )}
-        {error && (
-          <p className={css.title}>
-            Oops, some error. Please, try again later. Error: {error}
-          </p>
-        )}
-        <ImageAlbum openModal={this.onClickModalOpen} items={img} />
-        <Button
-          onClick={this.clickBtn}
-          img={img}
-          totalPages={totalPages}
-          page={page}
-        />
-        <Loader isLoading={isLoading} />
-      </div>
-    );
+          <Loader isLoading={isLoading} />
+        </div>
+      );
+    }
   }
-}

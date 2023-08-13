@@ -1,11 +1,21 @@
-/* @import-normalize; bring in normalize.css styles */
+import 'modern-normalize';
+import { createGlobalStyle } from 'styled-components';
+
+export const Style = createGlobalStyle`
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
 
 body {
+  box-sizing: border-box;
   margin: 0;
+  
+  padding:10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-  color: #212121;
-  background-color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -15,20 +25,23 @@ code {
     monospace;
 }
 
-html {
-  box-sizing: border-box;
-  width: 100vw;
-  overflow-x: hidden;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
+ul,
+ol {
+  margin: 0;
+  padding: 0;
 }
-
 img {
   display: block;
   max-width: 100%;
   height: auto;
 }
+`;

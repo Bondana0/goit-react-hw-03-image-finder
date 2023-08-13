@@ -1,48 +1,65 @@
-import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Button } from 'components/Button/Button';
+import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 
-import css from './Searchbar.module.css';
+import React, { Component } from 'react';
+import {
+  StyleSearchbar,
+  StyleSearchForm,
+  StyleButton,
+  StyledButtonLable,
+  StyleSerchInput,
+} from './Searchbar.styled';
 
-export class SearchBars extends Component {
+export class Searchbars extends Component {
   state = {
     name: '',
   };
 
-  onChangeInput = event => {
-    this.setState({ name: event.target.value.toLowerCase() });
+  handleInputChange = evt => {
+    this.setState({ name: evt.target.value });
   };
 
-  submitForm = ev => {
-    ev.preventDefault();
-    this.props.onSubmit(this.state.name);
-    this.setState({ name: '' });
+  onSubmit = evt => {
+    const name = this.state.name.trim();
+
+    evt.preventDefault();
+    this.props.onSubmit(name);
+  };
+
+  onLoadMoreClick = name => {
+    name = this.state.name;
+    console.log(name);
+
+    this.props.onLoadMoreClick(name);
   };
 
   render() {
-    return (
-      <header className={css.searchbars}>
-        <form className={css.form} onSubmit={this.submitForm}>
-          <button type={css.submit} className={css.button}>
-            <span className={css.button_label}>Search</span>
-          </button>
+    const { search } = this.state;
 
-          <input
-            onChange={this.onChangeInput}
-            name="name"
-            value={this.state.name}
-            className={css.input}
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            required
-          />
-        </form>
-      </header>
+    const { items, showLoadMoreBtn, onPicture } = this.props;
+
+    return (
+      <>
+        <StyleSearchbar>
+          <StyleSearchForm onSubmit={this.onSubmit}>
+            <StyleButton type="submit">
+              <StyledButtonLable>Search</StyledButtonLable>
+            </StyleButton>
+
+            <StyleSerchInput
+              type="text"
+              autoComplete="off"
+              autoFocus
+              placeholder="Search images and photos"
+              onChange={this.handleInputChange}
+              value={search}
+            />
+          </StyleSearchForm>
+        </StyleSearchbar>
+
+        <ImageGallery items={items} onPicture={onPicture} />
+        {showLoadMoreBtn && <Button onClick={this.onLoadMoreClick} />}
+      </>
     );
   }
 }
-
-SearchBars.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};

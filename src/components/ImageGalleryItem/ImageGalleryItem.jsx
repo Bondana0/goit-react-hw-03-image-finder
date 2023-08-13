@@ -1,32 +1,25 @@
-import PropTypes from 'prop-types';
-import css from './ImageGalleryItem.module.css';
+import React from 'react';
+import { Component } from 'react';
+import { StyledImageItem, StyledImageItemImg } from './ImageGalleryItem.styled';
 
-export const ImageAlbumItem = ({ items, openModal }) => {
-  return (
-    <>
-      {items.map(({ id, webformatURL, tags, largeImageURL }) => (
-        <li className={css.imageGalleryItem} key={id}>
-          <img
-            onClick={() => openModal(largeImageURL, tags)}
-            className={css.imageAlbumItem_image}
-            src={webformatURL}
-            alt={tags}
-            loading="lazy"
-          />
-        </li>
-      ))}
-    </>
-  );
-};
+export class ImageGalleryItem extends Component {
+  onImageClick = evt => {
+    const id = evt.currentTarget.id;
+    this.props.onPicture(id);
+  };
 
-ImageAlbumItem.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      webformatURL: PropTypes.string.isRequired,
-      tags: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-    }).isRequired
-  ).isRequired,
-  openModal: PropTypes.func.isRequired,
-};
+  render() {
+    const { item } = this.props;
+
+    return (
+      <StyledImageItem className="gallery-item">
+        <StyledImageItemImg
+          src={item.webformatURL}
+          alt={item.tags}
+          onClick={this.onImageClick}
+          id={item.id}
+        ></StyledImageItemImg>
+      </StyledImageItem>
+    );
+  }
+}

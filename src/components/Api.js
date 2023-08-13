@@ -1,20 +1,18 @@
-const URL = 'https://pixabay.com/api';
-const KEY = '36612658-29e1993b7f5cae28e7421abef';
+import axios from 'axios';
 
-const images = async (img, page = 1) => {
-  const response = await fetch(
-    `${URL}/?key=${KEY}&image_type=photo&q=${img}&page=${page}&orientation=horizontal&per_page=12`
+axios.defaults.baseURL = 'https://pixabay.com/api';
+const KEY_API = '34395621-a4ae5341feaa95111ecdda581';
+
+export const imagesFetch = async (img, page, perPage) => {
+  const response = await axios.get(
+    `/?key=${KEY_API}&q=${img}&image_type=photo&per_page=${perPage}&page=${page}`
   );
-  if (response.ok) {
+   if (response.ok) {
     return response.json();
   }
-  return await Promise.reject(
-    new Error(`Oops, some error. Please, try again later. Error: ${img}`)
-  );
-};
+  // return await Promise.reject(
+  //   new Error(`Oops, some error. Please, try again later. Error: ${img}`)
+  // );
 
-const api = {
-  images,
+  return response;
 };
-
-export default api;

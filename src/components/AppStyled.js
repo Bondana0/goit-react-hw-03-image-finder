@@ -1,11 +1,8 @@
-.app {
+import styled from 'styled-components';
+
+export const StyledApp = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 16px;
   padding-bottom: 24px;
-}
-.title {
-  padding-top: 20%;
-  text-align: center;
-  color: #3f51b5;
-}
+`;

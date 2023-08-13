@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyledApp } from './AppStyled';
 import { Searchbars } from './Searchbar/Searchbar';
 
-import { imagesFetch } from 'components/api';
+import { imagesFetch } from 'components/Api';
 import { Style } from './Style';
 import { Loader } from './Loader/Loader';
 import { Modal } from './Modal/Modal';
